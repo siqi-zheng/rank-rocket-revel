@@ -15,7 +15,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/rank-rocket-revel/">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<BlogList />} />
@@ -27,5 +27,6 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
+
 
 export default App;
