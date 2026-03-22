@@ -1,16 +1,476 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useRef, useState } from "react";
+import { Mail, Github, Linkedin, Twitter, ExternalLink, FileText, ChevronDown, MapPin, GraduationCap } from "lucide-react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const AVATAR_URL = "https://siqi-zheng.github.io/test_web_gemini/assets/avatar-CNCS8Fg2.jpg";
+
+const NAV_ITEMS = [
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Publications", href: "#publications" },
+  { label: "Contact", href: "#contact" },
+];
+
+const SKILLS = [
+  { category: "Research", items: ["Bayesian Statistics", "Experimental Design", "Computational Statistics", "Reproducibility"] },
+  { category: "Programming", items: ["R", "Python", "SQL", "JavaScript"] },
+  { category: "Tools & Platforms", items: ["JupyterHub", "REDCap", "Git/GitHub", "Generative AI"] },
+  { category: "Teaching", items: ["Course Instruction", "Curriculum Design", "Auto-Grading Systems"] },
+];
+
+const EXPERIENCES = [
+  {
+    period: "2025",
+    title: "Sessional Instructor",
+    org: "Dept. of Statistical Sciences, University of Toronto",
+    description: "Instructor for Statistical Theory (STA255), a core undergraduate course for statistics minors with ~50 students; delivered 6 hours of lectures per week over a 6-week term.",
+  },
+  {
+    period: "2022 – 2025",
+    title: "Business Systems Analyst",
+    org: "Academic, Research & Collaborative (ARC), University of Toronto",
+    description: "Administered UofT JupyterHub (10K+ users) and REDCap survey platform (3K+ users), supporting scientific computation and research data collection for 50+ departments. Led the AI Virtual Tutors Pilot Project, deploying Generative AI chatbots across 6 courses.",
+  },
+  {
+    period: "2023 – 2025",
+    title: "Software Developer (Part-time)",
+    org: "Dept. of Statistical Sciences, University of Toronto",
+    description: "Developed and maintained RMarkUs, an open-source R package for automated grading of R assignments across 5 courses with class sizes up to 500 students.",
+  },
+  {
+    period: "2020 – 2024",
+    title: "Teaching Assistant (Part-time)",
+    org: "Dept. of Statistical Sciences, University of Toronto",
+    description: "TA for multiple undergraduate and graduate statistics courses, supporting instruction and student learning.",
+  },
+];
+
+const PROJECTS = [
+  {
+    title: "RMarkUs",
+    description: "Open-source R package built on testthat for automated grading of R assignments, used across 5 courses with up to 500 students per class.",
+    link: "https://github.com/RAutoGrading/RMarkUs",
+    tags: ["R", "Open Source", "Education"],
+  },
+  {
+    title: "AI Virtual Tutors Pilot",
+    description: "Led the deployment of Generative AI chatbots across 6 university courses (60–200 students each), exploring AI-assisted learning at scale.",
+    tags: ["Generative AI", "EdTech", "Leadership"],
+  },
+];
+
+// Scroll-reveal hook
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.unobserve(el); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return { ref, visible };
+}
+
+function RevealSection({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const { ref, visible } = useReveal();
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(18px)",
+        filter: visible ? "blur(0px)" : "blur(4px)",
+        transition: `opacity 600ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 600ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, filter 600ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+      }}
+    >
+      {children}
     </div>
   );
-};
+}
 
-const Index = PlaceholderIndex;
+// --- Nav ---
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-background/90 backdrop-blur-md shadow-sm" : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-14">
+        <a href="#" className="font-serif text-lg font-semibold tracking-tight text-foreground" style={{ fontFamily: "var(--font-serif)" }}>
+          S. Zheng
+        </a>
+        {/* Desktop */}
+        <ul className="hidden md:flex gap-6 text-sm">
+          {NAV_ITEMS.map((n) => (
+            <li key={n.href}>
+              <a href={n.href} className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+                {n.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden p-2 text-muted-foreground hover:text-foreground active:scale-95 transition-transform"
+          aria-label="Toggle navigation"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {mobileOpen ? <path d="M18 6L6 18M6 6l12 12" /> : <><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" /></>}
+          </svg>
+        </button>
+      </div>
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-background/95 backdrop-blur-md border-b border-border px-6 pb-4">
+          {NAV_ITEMS.map((n) => (
+            <a
+              key={n.href}
+              href={n.href}
+              onClick={() => setMobileOpen(false)}
+              className="block py-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              {n.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+}
 
-export default Index;
+// --- Hero ---
+function Hero() {
+  return (
+    <section className="min-h-[85vh] flex items-center pt-14">
+      <div className="max-w-4xl mx-auto px-6 w-full py-16 md:py-24">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+          <RevealSection className="shrink-0">
+            <img
+              src={AVATAR_URL}
+              alt="Siqi Zheng, PhD student at the National University of Singapore"
+              className="w-40 h-40 md:w-48 md:h-48 rounded-2xl object-cover shadow-lg shadow-foreground/5 ring-1 ring-border"
+              loading="eager"
+            />
+          </RevealSection>
+          <div className="text-center md:text-left">
+            <RevealSection delay={100}>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] text-foreground text-balance" style={{ fontFamily: "var(--font-serif)" }}>
+                Siqi Zheng
+              </h1>
+            </RevealSection>
+            <RevealSection delay={200}>
+              <p className="mt-3 text-lg text-muted-foreground flex items-center justify-center md:justify-start gap-2 flex-wrap">
+                <GraduationCap className="w-5 h-5" />
+                PhD Student · Bayesian Statistics
+                <span className="text-border">|</span>
+                <MapPin className="w-4 h-4" /> NUS, Singapore
+              </p>
+            </RevealSection>
+            <RevealSection delay={300}>
+              <div className="mt-6 flex items-center gap-3 justify-center md:justify-start flex-wrap">
+                <a
+                  href="mailto:timothyzheng2000@gmail.com"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm"
+                >
+                  <Mail className="w-4 h-4" /> Get in Touch
+                </a>
+                <a
+                  href="https://arxiv.org/abs/2210.16350"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-secondary active:scale-[0.97] transition-all duration-200"
+                >
+                  <FileText className="w-4 h-4" /> View Paper
+                </a>
+              </div>
+            </RevealSection>
+            <RevealSection delay={400}>
+              <div className="mt-5 flex gap-4 justify-center md:justify-start">
+                {[
+                  { href: "https://github.com/siqi-zheng", icon: Github, label: "GitHub" },
+                  { href: "https://www.linkedin.com/in/siqi-zheng-nus/", icon: Linkedin, label: "LinkedIn" },
+                  { href: "https://x.com/SiqiiiTim", icon: Twitter, label: "X / Twitter" },
+                ].map(({ href, icon: Icon, label }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all duration-200"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            </RevealSection>
+          </div>
+        </div>
+        <div className="mt-16 flex justify-center">
+          <a href="#about" className="text-muted-foreground/50 hover:text-muted-foreground transition-colors animate-bounce">
+            <ChevronDown className="w-6 h-6" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- Section wrapper ---
+function Section({ id, title, children, className = "" }: { id: string; title: string; children: React.ReactNode; className?: string }) {
+  return (
+    <section id={id} className={`py-16 md:py-24 ${className}`}>
+      <div className="max-w-4xl mx-auto px-6">
+        <RevealSection>
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground mb-10" style={{ fontFamily: "var(--font-serif)" }}>
+            {title}
+          </h2>
+        </RevealSection>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+// --- About ---
+function About() {
+  return (
+    <Section id="about" title="About">
+      <RevealSection>
+        <p className="text-base md:text-lg leading-relaxed text-muted-foreground max-w-prose text-pretty">
+          I am a first-year PhD student at the National University of Singapore, supervised by{" "}
+          <a href="https://iora.nus.edu.sg/people-p/david-nott/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline underline-offset-4">
+            Prof. David Nott
+          </a>
+          . Previously, I earned my MSc (GPA: 4.00/4.00) and HBSc in Statistics from the University of Toronto.
+          I am committed to advancing computational Bayesian Statistics, with research interests in{" "}
+          <strong className="text-foreground font-medium">Bayesian Statistics</strong> and{" "}
+          <strong className="text-foreground font-medium">Experimental Design</strong>.
+        </p>
+      </RevealSection>
+      <RevealSection delay={100}>
+        <p className="mt-4 text-base md:text-lg leading-relaxed text-muted-foreground max-w-prose text-pretty">
+          At the University of Toronto, I served as a business analyst at{" "}
+          <a href="https://act.utoronto.ca/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline underline-offset-4">ARC</a>,
+          administering JupyterHub and REDCap. I led a group at{" "}
+          <a href="https://www.statistics.utoronto.ca/past-datafest-at-UofT#past-datafest-accordion-3" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline underline-offset-4">
+            DataFest@UofT 2022
+          </a>{" "}
+          and won the <em>Best Statistical Analysis Award</em>.
+        </p>
+      </RevealSection>
+      <RevealSection delay={200}>
+        <p className="mt-6 text-sm font-medium text-accent bg-accent/10 inline-flex items-center gap-2 px-4 py-2 rounded-lg">
+          🔍 Currently on the job market — seeking an internship position.
+        </p>
+      </RevealSection>
+    </Section>
+  );
+}
+
+// --- Skills ---
+function SkillsSection() {
+  return (
+    <Section id="skills" title="Skills" className="bg-card">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {SKILLS.map((group, i) => (
+          <RevealSection key={group.category} delay={i * 80}>
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: "var(--font-sans)" }}>
+                {group.category}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 rounded-md text-sm bg-background text-foreground border border-border shadow-sm"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </RevealSection>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// --- Experience ---
+function ExperienceSection() {
+  return (
+    <Section id="experience" title="Experience">
+      <div className="space-y-10">
+        {EXPERIENCES.map((exp, i) => (
+          <RevealSection key={i} delay={i * 80}>
+            <div className="flex gap-6">
+              <div className="hidden sm:flex flex-col items-center pt-1">
+                <div className="w-2.5 h-2.5 rounded-full bg-primary shrink-0" />
+                {i < EXPERIENCES.length - 1 && <div className="w-px flex-1 bg-border mt-2" />}
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-medium text-muted-foreground tracking-wide uppercase">{exp.period}</p>
+                <h3 className="text-lg font-semibold text-foreground mt-1" style={{ fontFamily: "var(--font-serif)" }}>{exp.title}</h3>
+                <p className="text-sm text-primary mt-0.5">{exp.org}</p>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed text-pretty">{exp.description}</p>
+              </div>
+            </div>
+          </RevealSection>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// --- Projects ---
+function ProjectsSection() {
+  return (
+    <Section id="projects" title="Projects" className="bg-card">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {PROJECTS.map((proj, i) => (
+          <RevealSection key={proj.title} delay={i * 100}>
+            <div className="p-6 rounded-xl bg-background border border-border shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
+              <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: "var(--font-serif)" }}>{proj.title}</h3>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed flex-1 text-pretty">{proj.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {proj.tags.map((tag) => (
+                  <span key={tag} className="text-xs px-2 py-1 rounded-md bg-secondary text-muted-foreground">{tag}</span>
+                ))}
+              </div>
+              {proj.link && (
+                <a
+                  href={proj.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4"
+                >
+                  View on GitHub <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+            </div>
+          </RevealSection>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// --- Publications ---
+function PublicationsSection() {
+  return (
+    <Section id="publications" title="Publications">
+      <RevealSection>
+        <div className="p-6 rounded-xl border border-border bg-card">
+          <p className="text-xs font-medium text-muted-foreground tracking-wide uppercase">2022</p>
+          <h3 className="text-lg font-semibold text-foreground mt-1" style={{ fontFamily: "var(--font-serif)" }}>
+            A Comparison of Reproducibility Guidelines and Its Implications on Undergraduate Statistical Education
+          </h3>
+          <p className="text-sm text-foreground mt-1">Siqi Zheng</p>
+          <p className="text-sm text-accent mt-1 italic">
+            Best Undergraduate Oral Presentation — The Tenth Annual Canadian Statistics Student Conference (CSSC)
+          </p>
+          <div className="mt-4 flex gap-3">
+            <a
+              href="https://arxiv.org/abs/2210.16350"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4"
+            >
+              <FileText className="w-3.5 h-3.5" /> arXiv
+            </a>
+            <a
+              href="https://github.com/siqi-zheng/SSC_Reproducibility_Presentation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4"
+            >
+              <ExternalLink className="w-3.5 h-3.5" /> Presentation
+            </a>
+          </div>
+        </div>
+      </RevealSection>
+    </Section>
+  );
+}
+
+// --- Contact ---
+function ContactSection() {
+  return (
+    <Section id="contact" title="Contact" className="bg-card">
+      <RevealSection>
+        <p className="text-muted-foreground text-pretty max-w-prose">
+          I'm always open to discussing research collaborations, teaching opportunities, or internship positions. Feel free to reach out.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-4">
+          <a
+            href="mailto:timothyzheng2000@gmail.com"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm"
+          >
+            <Mail className="w-4 h-4" /> timothyzheng2000@gmail.com
+          </a>
+        </div>
+        <div className="mt-4 flex gap-4">
+          {[
+            { href: "https://github.com/siqi-zheng", icon: Github, label: "GitHub" },
+            { href: "https://www.linkedin.com/in/siqi-zheng-nus/", icon: Linkedin, label: "LinkedIn" },
+            { href: "https://x.com/SiqiiiTim", icon: Twitter, label: "X" },
+          ].map(({ href, icon: Icon, label }) => (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Icon className="w-4 h-4" /> {label}
+            </a>
+          ))}
+        </div>
+      </RevealSection>
+    </Section>
+  );
+}
+
+// --- Footer ---
+function Footer() {
+  return (
+    <footer className="py-8 border-t border-border">
+      <div className="max-w-4xl mx-auto px-6 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} Siqi Zheng. All rights reserved.
+      </div>
+    </footer>
+  );
+}
+
+export default function Index() {
+  return (
+    <main className="min-h-screen">
+      <Nav />
+      <Hero />
+      <About />
+      <SkillsSection />
+      <ExperienceSection />
+      <ProjectsSection />
+      <PublicationsSection />
+      <ContactSection />
+      <Footer />
+    </main>
+  );
+}
