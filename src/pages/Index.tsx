@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Mail, Github, Linkedin, Twitter, ExternalLink, FileText, ChevronDown, MapPin, GraduationCap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Mail, Github, Linkedin, Twitter, ExternalLink, FileText, ChevronDown, MapPin, GraduationCap, Download } from "lucide-react";
+import FeaturedArticles from "@/components/FeaturedArticles";
+import BlogSection from "@/components/BlogSection";
+import BackToTop from "@/components/BackToTop";
 
 const AVATAR_URL = "https://siqi-zheng.github.io/test_web_gemini/assets/avatar-CNCS8Fg2.jpg";
+const CV_URL = "/Siqi_Zheng_CV.pdf";
 
 const NAV_ITEMS = [
   { label: "About", href: "#about" },
@@ -9,6 +14,7 @@ const NAV_ITEMS = [
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Publications", href: "#publications" },
+  { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -111,10 +117,9 @@ function Nav() {
       }`}
     >
       <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-14">
-        <a href="#" className="font-serif text-lg font-semibold tracking-tight text-foreground" style={{ fontFamily: "var(--font-serif)" }}>
+        <a href="#" className="font-semibold tracking-tight text-foreground text-lg" style={{ fontFamily: "var(--font-serif)" }}>
           S. Zheng
         </a>
-        {/* Desktop */}
         <ul className="hidden md:flex gap-6 text-sm">
           {NAV_ITEMS.map((n) => (
             <li key={n.href}>
@@ -124,7 +129,6 @@ function Nav() {
             </li>
           ))}
         </ul>
-        {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden p-2 text-muted-foreground hover:text-foreground active:scale-95 transition-transform"
@@ -135,16 +139,10 @@ function Nav() {
           </svg>
         </button>
       </div>
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-b border-border px-6 pb-4">
           {NAV_ITEMS.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              onClick={() => setMobileOpen(false)}
-              className="block py-2 text-sm text-muted-foreground hover:text-foreground"
-            >
+            <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted-foreground hover:text-foreground">
               {n.label}
             </a>
           ))}
@@ -191,12 +189,11 @@ function Hero() {
                   <Mail className="w-4 h-4" /> Get in Touch
                 </a>
                 <a
-                  href="https://arxiv.org/abs/2210.16350"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={CV_URL}
+                  download
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-secondary active:scale-[0.97] transition-all duration-200"
                 >
-                  <FileText className="w-4 h-4" /> View Paper
+                  <Download className="w-4 h-4" /> Download CV
                 </a>
               </div>
             </RevealSection>
@@ -248,7 +245,6 @@ function Section({ id, title, children, className = "" }: { id: string; title: s
   );
 }
 
-// --- About ---
 function About() {
   return (
     <Section id="about" title="About">
@@ -284,7 +280,6 @@ function About() {
   );
 }
 
-// --- Skills ---
 function SkillsSection() {
   return (
     <Section id="skills" title="Skills" className="bg-card">
@@ -292,15 +287,12 @@ function SkillsSection() {
         {SKILLS.map((group, i) => (
           <RevealSection key={group.category} delay={i * 80}>
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: "var(--font-sans)" }}>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-3">
                 {group.category}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {group.items.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 rounded-md text-sm bg-background text-foreground border border-border shadow-sm"
-                  >
+                  <span key={skill} className="px-3 py-1.5 rounded-md text-sm bg-background text-foreground border border-border shadow-sm">
                     {skill}
                   </span>
                 ))}
@@ -313,7 +305,6 @@ function SkillsSection() {
   );
 }
 
-// --- Experience ---
 function ExperienceSection() {
   return (
     <Section id="experience" title="Experience">
@@ -339,7 +330,6 @@ function ExperienceSection() {
   );
 }
 
-// --- Projects ---
 function ProjectsSection() {
   return (
     <Section id="projects" title="Projects" className="bg-card">
@@ -355,12 +345,7 @@ function ProjectsSection() {
                 ))}
               </div>
               {proj.link && (
-                <a
-                  href={proj.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4"
-                >
+                <a href={proj.link} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4">
                   View on GitHub <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               )}
@@ -372,7 +357,6 @@ function ProjectsSection() {
   );
 }
 
-// --- Publications ---
 function PublicationsSection() {
   return (
     <Section id="publications" title="Publications">
@@ -387,20 +371,10 @@ function PublicationsSection() {
             Best Undergraduate Oral Presentation — The Tenth Annual Canadian Statistics Student Conference (CSSC)
           </p>
           <div className="mt-4 flex gap-3">
-            <a
-              href="https://arxiv.org/abs/2210.16350"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4"
-            >
+            <a href="https://arxiv.org/abs/2210.16350" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4">
               <FileText className="w-3.5 h-3.5" /> arXiv
             </a>
-            <a
-              href="https://github.com/siqi-zheng/SSC_Reproducibility_Presentation"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4"
-            >
+            <a href="https://github.com/siqi-zheng/SSC_Reproducibility_Presentation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-4">
               <ExternalLink className="w-3.5 h-3.5" /> Presentation
             </a>
           </div>
@@ -410,7 +384,6 @@ function PublicationsSection() {
   );
 }
 
-// --- Contact ---
 function ContactSection() {
   return (
     <Section id="contact" title="Contact" className="bg-card">
@@ -419,10 +392,7 @@ function ContactSection() {
           I'm always open to discussing research collaborations, teaching opportunities, or internship positions. Feel free to reach out.
         </p>
         <div className="mt-6 flex flex-wrap gap-4">
-          <a
-            href="mailto:timothyzheng2000@gmail.com"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm"
-          >
+          <a href="mailto:timothyzheng2000@gmail.com" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm">
             <Mail className="w-4 h-4" /> timothyzheng2000@gmail.com
           </a>
         </div>
@@ -432,13 +402,7 @@ function ContactSection() {
             { href: "https://www.linkedin.com/in/siqi-zheng-nus/", icon: Linkedin, label: "LinkedIn" },
             { href: "https://x.com/SiqiiiTim", icon: Twitter, label: "X" },
           ].map(({ href, icon: Icon, label }) => (
-            <a
-              key={href}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <Icon className="w-4 h-4" /> {label}
             </a>
           ))}
@@ -448,7 +412,6 @@ function ContactSection() {
   );
 }
 
-// --- Footer ---
 function Footer() {
   return (
     <footer className="py-8 border-t border-border">
@@ -460,17 +423,23 @@ function Footer() {
 }
 
 export default function Index() {
+  const navigate = useNavigate();
+  const handleBlogNavigate = (slug: string) => navigate(`/blog/${slug}`);
+
   return (
     <main className="min-h-screen">
       <Nav />
       <Hero />
+      <FeaturedArticles onNavigate={handleBlogNavigate} />
       <About />
       <SkillsSection />
       <ExperienceSection />
       <ProjectsSection />
       <PublicationsSection />
+      <BlogSection onNavigate={handleBlogNavigate} />
       <ContactSection />
       <Footer />
+      <BackToTop />
     </main>
   );
 }
