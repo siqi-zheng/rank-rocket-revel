@@ -435,7 +435,6 @@ export default function Index() {
       <ProjectsSection />
       <PublicationsSection />
       <FeaturedArticles onNavigate={handleBlogNavigate} />
-      <BlogSection onNavigate={handleBlogNavigate} />
       <ContactSection />
       <Footer />
       <BackToTop />

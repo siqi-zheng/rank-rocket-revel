@@ -1,20 +1,33 @@
 import { BLOG_POSTS } from "@/data/blog-posts";
 import { ArrowRight, Calendar } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   onNavigate: (slug: string) => void;
 }
 
 export default function FeaturedArticles({ onNavigate }: Props) {
+  const navigate = useNavigate();
   const featured = BLOG_POSTS.filter((p) => p.featured).slice(0, 2);
   if (featured.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-16">
+    <section id="blog" className="py-16 md:py-24">
       <div className="max-w-4xl mx-auto px-6">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-          Recent Writing
-        </p>
+        <div className="flex items-baseline justify-between mb-10">
+          <h2
+            className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            Recent Writing
+          </h2>
+          <button
+            onClick={() => navigate("/blog")}
+            className="inline-flex items-center gap-1.5 text-sm text-primary font-medium hover:underline underline-offset-4 active:scale-95 transition-all"
+          >
+            See more <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {featured.map((post) => (
             <button
