@@ -430,12 +430,12 @@ export default function Index() {
     <main className="min-h-screen">
       <Nav />
       <Hero />
-      <FeaturedArticles onNavigate={handleBlogNavigate} />
       <About />
       <SkillsSection />
       <ExperienceSection />
       <ProjectsSection />
       <PublicationsSection />
+      <FeaturedArticles onNavigate={handleBlogNavigate} />
       <BlogSection onNavigate={handleBlogNavigate} />
       <ContactSection />
       <Footer />
