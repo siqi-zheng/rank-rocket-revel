@@ -155,7 +155,7 @@ function Nav() {
 // --- Hero ---
 function Hero() {
   return (
-    <section className="min-h-[85vh] flex items-center pt-14">
+    <section className="min-h-screen flex items-center pt-14">
       <div className="max-w-4xl mx-auto px-6 w-full py-16 md:py-24">
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
           <RevealSection className="shrink-0">
