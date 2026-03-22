@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Github, Linkedin, Twitter, ExternalLink, FileText, ChevronDown, MapPin, GraduationCap, Download } from "lucide-react";
 import FeaturedArticles from "@/components/FeaturedArticles";
-import BlogSection from "@/components/BlogSection";
 import BackToTop from "@/components/BackToTop";
 
 const AVATAR_URL = "https://siqi-zheng.github.io/test_web_gemini/assets/avatar-CNCS8Fg2.jpg";
