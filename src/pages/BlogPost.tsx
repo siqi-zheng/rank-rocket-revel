@@ -1,9 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { BLOG_POSTS } from "@/data/blog-posts";
 import { ArrowLeft, Calendar } from "lucide-react";
+import katex from "katex";
+import "katex/dist/katex.min.css"; // CRITICAL: Math will not display correctly without this
+import { useEffect } from "react";
 
 function renderMarkdown(md: string) {
-  // Minimal markdown-to-JSX for headings, bold, italic, links, blockquotes, lists, code
+  // Minimal markdown-to-JSX for headings, bold, italic, links, blockquotes, lists, code, and math
   const lines = md.trim().split("\n");
   const elements: React.ReactNode[] = [];
   let i = 0;
@@ -29,12 +32,22 @@ function renderMarkdown(md: string) {
 
   const formatInline = (text: string): React.ReactNode => {
     return text
-      .split(/(\*\*[^*]+\*\*|\*[^*]+\*)/)
+      // Added support for $inline math$ parsing
+      .split(/(\*\*[^*]+\*\*|\*[^*]+\*|\$[^$]+\$)/)
       .map((seg, idx) => {
         if (seg.startsWith("**") && seg.endsWith("**"))
           return <strong key={idx} className="text-foreground font-semibold">{seg.slice(2, -2)}</strong>;
         if (seg.startsWith("*") && seg.endsWith("*"))
           return <em key={idx}>{seg.slice(1, -1)}</em>;
+        if (seg.startsWith("$") && seg.endsWith("$")) {
+          // Render inline KaTeX
+          try {
+            const html = katex.renderToString(seg.slice(1, -1), { displayMode: false, throwOnError: false });
+            return <span key={idx} dangerouslySetInnerHTML={{ __html: html }} />;
+          } catch (e) {
+            return seg;
+          }
+        }
         return seg;
       });
   };
@@ -78,12 +91,38 @@ function renderMarkdown(md: string) {
         </ul>
       );
       continue;
-    } else if (line.startsWith("$$")) {
-      elements.push(
-        <pre key={i} className="my-4 p-4 bg-secondary rounded-lg text-sm text-foreground overflow-x-auto font-mono">
-          {line.replace(/\$\$/g, "")}
-        </pre>
-      );
+    } else if (line.trim().startsWith("$$")) {
+      // Handle block math (both single-line and multi-line)
+      let mathExpr = line.trim().replace(/^\$\$/, "");
+      
+      // If it's a single line like: $$ equation $$
+      if (mathExpr.endsWith("$$") && line.trim() !== "$$") {
+        mathExpr = mathExpr.replace(/\$\$$/, "");
+      } else {
+        // Collect multi-line equations
+        i++;
+        while (i < lines.length && !lines[i].trim().includes("$$")) {
+          mathExpr += "\n" + lines[i];
+          i++;
+        }
+        if (i < lines.length) {
+          mathExpr += "\n" + lines[i].replace(/\$\$/, "");
+        }
+      }
+
+      try {
+        const html = katex.renderToString(mathExpr, { displayMode: true, throwOnError: false });
+        elements.push(
+          <div key={i} className="my-6 overflow-x-auto text-foreground flex justify-center" dangerouslySetInnerHTML={{ __html: html }} />
+        );
+      } catch (err) {
+        // Fallback to raw text if KaTeX fails to parse
+        elements.push(
+          <pre key={i} className="my-4 p-4 bg-red-950/20 text-red-500 rounded-lg text-sm overflow-x-auto font-mono">
+            {mathExpr}
+          </pre>
+        );
+      }
     } else {
       elements.push(
         <p key={i} className="text-base leading-relaxed text-muted-foreground my-3 text-pretty">
@@ -98,10 +137,13 @@ function renderMarkdown(md: string) {
 }
 
 export default function BlogPost() {
+  
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const post = BLOG_POSTS.find((p) => p.slug === slug);
-
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [slug]);
   if (!post) {
     return (
       <div className="min-h-screen flex items-center justify-center">

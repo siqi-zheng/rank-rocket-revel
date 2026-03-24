@@ -4,8 +4,8 @@ import { Mail, Github, Linkedin, Twitter, ExternalLink, FileText, ChevronDown, M
 import FeaturedArticles from "@/components/FeaturedArticles";
 import BackToTop from "@/components/BackToTop";
 
-const AVATAR_URL = "https://siqi-zheng.github.io/test_web_gemini/assets/avatar-CNCS8Fg2.jpg";
-const CV_URL = "/Siqi_Zheng_CV.pdf";
+const AVATAR_URL = `${import.meta.env.BASE_URL}avatar.jpg`;
+const CV_URL = `${import.meta.env.BASE_URL}Siqi_Zheng_CV.pdf`;
 
 const NAV_ITEMS = [
   { label: "About", href: "#about" },
