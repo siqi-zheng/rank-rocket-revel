@@ -235,7 +235,7 @@ function Hero() {
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10 lg:gap-16">
           
           {/* Left Column: Profile Image & Social Icons */}
-          <div className="flex-1 flex flex-col items-center md:items-end w-full max-w-[340px] md:max-w-[380px] shrink-0 gap-6 mt-6 md:mt-0">
+          <div className="flex flex-col items-center md:items-end w-full max-w-[340px] md:max-w-[380px] shrink-0 gap-6 mt-6 md:mt-0">
             <RevealSection className="w-full flex justify-center md:justify-end">
               <img
                 src={AVATAR_URL}
@@ -269,7 +269,7 @@ function Hero() {
           </div>
 
           {/* Right Column: Industrial-Oriented Academic Text & Action Buttons */}
-          <div className="flex-1 text-center md:text-left">
+          <div className="text-center md:text-left">
             <RevealSection delay={100}>
               <h1 className="text-[2.8rem] md:text-[3.5rem] lg:text-[4.2rem] font-extrabold tracking-tight leading-[1.05] text-[#021A40] mb-6">
                 Building Scalable<br />
