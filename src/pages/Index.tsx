@@ -152,52 +152,102 @@ function Nav() {
 }
 
 // --- Hero ---
+// function Hero() {
+//   return (
+//     <section className="min-h-screen flex items-center pt-14">
+//       <div className="max-w-4xl mx-auto px-6 w-full py-16 md:py-24">
+//         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+//           <RevealSection className="shrink-0">
+//             <img
+//               src={AVATAR_URL}
+//               alt="Siqi Zheng, PhD student at the National University of Singapore"
+//               className="w-40 h-40 md:w-48 md:h-48 rounded-2xl object-cover shadow-lg shadow-foreground/5 ring-1 ring-border"
+//               loading="eager"
+//             />
+//           </RevealSection>
+//           <div className="text-center md:text-left">
+//             <RevealSection delay={100}>
+//               <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] text-foreground text-balance" style={{ fontFamily: "var(--font-serif)" }}>
+//                 Siqi Zheng
+//               </h1>
+//             </RevealSection>
+//             <RevealSection delay={200}>
+//               <p className="mt-3 text-lg text-muted-foreground flex items-center justify-center md:justify-start gap-2 flex-wrap">
+//                 <GraduationCap className="w-5 h-5" />
+//                 PhD Student · Bayesian Statistics
+//                 <span className="text-border">|</span>
+//                 <MapPin className="w-4 h-4" /> NUS, Singapore
+//               </p>
+//             </RevealSection>
+//             <RevealSection delay={300}>
+//               <div className="mt-6 flex items-center gap-3 justify-center md:justify-start flex-wrap">
+//                 <a
+//                   href="mailto:timothyzheng2000@gmail.com"
+//                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm"
+//                 >
+//                   <Mail className="w-4 h-4" /> Get in Touch
+//                 </a>
+//                 <a
+//                   href={CV_URL}
+//                   download
+//                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-secondary active:scale-[0.97] transition-all duration-200"
+//                 >
+//                   <Download className="w-4 h-4" /> Download CV
+//                 </a>
+//               </div>
+//             </RevealSection>
+//             <RevealSection delay={400}>
+//               <div className="mt-5 flex gap-4 justify-center md:justify-start">
+//                 {[
+//                   { href: "https://github.com/siqi-zheng", icon: Github, label: "GitHub" },
+//                   { href: "https://www.linkedin.com/in/siqi-zheng-nus/", icon: Linkedin, label: "LinkedIn" },
+//                   { href: "https://x.com/SiqiiiTim", icon: Twitter, label: "X / Twitter" },
+//                 ].map(({ href, icon: Icon, label }) => (
+//                   <a
+//                     key={href}
+//                     href={href}
+//                     target="_blank"
+//                     rel="noopener noreferrer"
+//                     aria-label={label}
+//                     className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all duration-200"
+//                   >
+//                     <Icon className="w-5 h-5" />
+//                   </a>
+//                 ))}
+//               </div>
+//             </RevealSection>
+//           </div>
+//         </div>
+//         <div className="mt-16 flex justify-center">
+//           <a href="#about" className="text-muted-foreground/50 hover:text-muted-foreground transition-colors animate-bounce">
+//             <ChevronDown className="w-6 h-6" />
+//           </a>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 function Hero() {
   return (
     <section className="min-h-screen flex items-center pt-14">
-      <div className="max-w-4xl mx-auto px-6 w-full py-16 md:py-24">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          <RevealSection className="shrink-0">
-            <img
-              src={AVATAR_URL}
-              alt="Siqi Zheng, PhD student at the National University of Singapore"
-              className="w-40 h-40 md:w-48 md:h-48 rounded-2xl object-cover shadow-lg shadow-foreground/5 ring-1 ring-border"
-              loading="eager"
-            />
-          </RevealSection>
-          <div className="text-center md:text-left">
-            <RevealSection delay={100}>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] text-foreground text-balance" style={{ fontFamily: "var(--font-serif)" }}>
-                Siqi Zheng
-              </h1>
+      <div className="max-w-6xl mx-auto px-6 w-full py-16 md:py-24">
+        
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10 lg:gap-16">
+          
+          {/* Left Column: Profile Image & Social Icons */}
+          <div className="flex-1 flex flex-col items-center md:items-end w-full max-w-[340px] md:max-w-[380px] shrink-0 gap-6 mt-6 md:mt-0">
+            <RevealSection className="w-full flex justify-center md:justify-end">
+              <img
+                src={AVATAR_URL}
+                alt="Siqi Zheng, PhD student at the National University of Singapore"
+                className="w-full h-auto rounded-2xl object-cover shadow-lg shadow-foreground/5 ring-1 ring-border"
+                loading="eager"
+              />
             </RevealSection>
-            <RevealSection delay={200}>
-              <p className="mt-3 text-lg text-muted-foreground flex items-center justify-center md:justify-start gap-2 flex-wrap">
-                <GraduationCap className="w-5 h-5" />
-                PhD Student · Bayesian Statistics
-                <span className="text-border">|</span>
-                <MapPin className="w-4 h-4" /> NUS, Singapore
-              </p>
-            </RevealSection>
-            <RevealSection delay={300}>
-              <div className="mt-6 flex items-center gap-3 justify-center md:justify-start flex-wrap">
-                <a
-                  href="mailto:timothyzheng2000@gmail.com"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm"
-                >
-                  <Mail className="w-4 h-4" /> Get in Touch
-                </a>
-                <a
-                  href={CV_URL}
-                  download
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-secondary active:scale-[0.97] transition-all duration-200"
-                >
-                  <Download className="w-4 h-4" /> Download CV
-                </a>
-              </div>
-            </RevealSection>
-            <RevealSection delay={400}>
-              <div className="mt-5 flex gap-4 justify-center md:justify-start">
+
+            {/* Social Icons - Moved under the avatar for better visual balance */}
+            <RevealSection delay={400} className="w-full flex justify-center md:justify-center">
+              <div className="flex gap-4">
                 {[
                   { href: "https://github.com/siqi-zheng", icon: Github, label: "GitHub" },
                   { href: "https://www.linkedin.com/in/siqi-zheng-nus/", icon: Linkedin, label: "LinkedIn" },
@@ -209,25 +259,72 @@ function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all duration-200"
+                    className="p-2 rounded-md text-muted-foreground hover:text-[#021A40] hover:bg-secondary active:scale-95 transition-all duration-200"
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-6 h-6" />
                   </a>
                 ))}
               </div>
             </RevealSection>
           </div>
+
+          {/* Right Column: Industrial-Oriented Academic Text & Action Buttons */}
+          <div className="flex-1 text-center md:text-left">
+            <RevealSection delay={100}>
+              <h1 className="text-[2.8rem] md:text-[3.5rem] lg:text-[4.2rem] font-extrabold tracking-tight leading-[1.05] text-[#021A40] mb-6">
+                Building Scalable<br />
+                AI Systems &<br />
+                <span className="text-[#3061A3] italic">Probabilistic Models</span>
+              </h1>
+            </RevealSection>
+
+            <RevealSection delay={200}>
+              <p className="mt-3 text-lg md:text-xl text-gray-700 leading-relaxed mb-8 max-w-lg mx-auto md:mx-0">
+                I am a PhD student at NUS bridging rigorous Bayesian statistics with production-level software engineering. Drawing from my experience managing computing platforms for 10,000+ users and deploying optimized Generative AI applications at the University of Toronto, I engineer robust pipelines to turn complex data into actionable, real-world solutions.
+              </p>
+            </RevealSection>
+
+            <RevealSection delay={300}>
+              <div className="mt-6 flex flex-wrap items-center gap-4 justify-center md:justify-start">
+                <a 
+                  href="#projects" 
+                  className="inline-flex items-center gap-2 bg-[#021A40] text-white text-sm font-bold tracking-widest uppercase px-6 py-3 rounded-lg hover:bg-blue-900 transition-all duration-200 shadow-md active:scale-[0.97]"
+                >
+                  View Projects
+                  <span className="text-lg leading-none">&rarr;</span>
+                </a>
+                
+                <a
+                  href="mailto:timothyzheng2000@gmail.com"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.97] transition-all duration-200 shadow-sm"
+                >
+                  <Mail className="w-4 h-4" /> Get in Touch
+                </a>
+
+                <a
+                  href={CV_URL}
+                  download
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-secondary active:scale-[0.97] transition-all duration-200"
+                >
+                  <Download className="w-4 h-4" /> Download CV
+                </a>
+              </div>
+            </RevealSection>
+          </div>
+
         </div>
+
+        {/* Bouncing Scroll Indicator */}
         <div className="mt-16 flex justify-center">
-          <a href="#about" className="text-muted-foreground/50 hover:text-muted-foreground transition-colors animate-bounce">
-            <ChevronDown className="w-6 h-6" />
+          <a href="#about" className="text-muted-foreground/50 hover:text-[#021A40] transition-colors animate-bounce">
+            <ChevronDown className="w-8 h-8" />
           </a>
         </div>
+
       </div>
     </section>
   );
 }
-
 // --- Section wrapper ---
 function Section({ id, title, children, className = "" }: { id: string; title: string; children: React.ReactNode; className?: string }) {
   return (
