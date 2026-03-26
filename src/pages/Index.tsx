@@ -224,6 +224,7 @@ function Nav() {
 //           </a>
 //         </div>
 //       </div>
+      
 //     </section>
 //   );
 // }
@@ -245,8 +246,9 @@ function Hero() {
               />
             </RevealSection>
 
-            {/* Social Icons - Moved under the avatar for better visual balance */}
-            <RevealSection delay={400} className="w-full flex justify-center md:justify-center">
+            {/* Social Icons - Moved under the avatar for better visual balance 
+            <RevealSection delay={400} className="w-full flex justify-center md:justify-center">*/}
+            <RevealSection delay={400} className="hidden md:flex w-full justify-center md:justify-center">
               <div className="flex gap-4">
                 {[
                   { href: "https://github.com/siqi-zheng", icon: Github, label: "GitHub" },
@@ -311,7 +313,29 @@ function Hero() {
               </div>
             </RevealSection>
           </div>
+            
 
+            {/* Social Icons - mobile only, below Download CV */}
+            <RevealSection delay={350} className="flex md:hidden justify-center w-full mt-2">
+              <div className="flex gap-4">
+                {[
+                  { href: "https://github.com/siqi-zheng", icon: Github, label: "GitHub" },
+                  { href: "https://www.linkedin.com/in/siqi-zheng-nus/", icon: Linkedin, label: "LinkedIn" },
+                  { href: "https://x.com/SiqiiiTim", icon: Twitter, label: "X / Twitter" },
+                ].map(({ href, icon: Icon, label }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="p-2 rounded-md text-muted-foreground hover:text-[#021A40] hover:bg-secondary active:scale-95 transition-all duration-200"
+                  >
+                    <Icon className="w-6 h-6" />
+                  </a>
+                ))}
+              </div>
+            </RevealSection>
         </div>
 
         {/* Bouncing Scroll Indicator */}
@@ -325,6 +349,7 @@ function Hero() {
     </section>
   );
 }
+
 // --- Section wrapper ---
 function Section({ id, title, children, className = "" }: { id: string; title: string; children: React.ReactNode; className?: string }) {
   return (
